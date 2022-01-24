@@ -49,10 +49,13 @@ public class AplikacjaUzytkownika {
     private JButton wylogujButton1;
     private JButton zawodnicyButton;
     private JPanel panelWidokow;
+    private JPasswordField pinPasswordField;
+    private JPasswordField hasloPasswordField;
 
     public void ustawComboBox()
     {
         druzynyComboBox.removeAllItems();
+        druzynyComboBox.addItem("");
         druzynyComboBox.addItem("FC Bayern Monachium");
         druzynyComboBox.addItem("Borussia Dortmund");
         druzynyComboBox.addItem("Manchester City");
@@ -80,7 +83,7 @@ public class AplikacjaUzytkownika {
                 layout.first(glownyPanelUzytkownika);
                 frame.setSize(300,300);
                 loginTextField.setText("");
-                hasloTextField.setText("");
+                hasloPasswordField.setText("");
             }
         });
         sędziaButton.addActionListener(new ActionListener() {
@@ -95,7 +98,7 @@ public class AplikacjaUzytkownika {
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanelUzytkownika);
                 idTextField.setText("");
-                pinTextField.setText("");
+                pinPasswordField.setText("");
                 frame.setSize(300,300);
             }
         });
@@ -114,9 +117,18 @@ public class AplikacjaUzytkownika {
         zalogujButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                layout.next(glownyPanelUzytkownika);
-                layout.next(glownyPanelUzytkownika);
-                frame.setSize(600,400);
+                if (idTextField.getText().equals("") || pinPasswordField.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
+                }
+                else
+                {
+                    layout.next(glownyPanelUzytkownika);
+                    layout.next(glownyPanelUzytkownika);
+                    frame.setSize(600,400);
+                    idTextField.setText("");
+                    pinPasswordField.setText("");
+                }
             }
         });
         powrótButton2.addActionListener(new ActionListener() {
@@ -125,6 +137,10 @@ public class AplikacjaUzytkownika {
                 layout.previous(glownyPanelUzytkownika);
                 layout.previous(glownyPanelUzytkownika);
                 frame.setSize(600,400);
+                loginRejestracjaTextField.setText("");
+                hasloRejestracjaTextField.setText("");
+                powtorzHasloTextField.setText("");
+                druzynyComboBox.setSelectedIndex(0);
             }
         });
         utwórzNoweKontoButton.addActionListener(new ActionListener() {
@@ -147,8 +163,50 @@ public class AplikacjaUzytkownika {
         zalogujButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                layout.last(glownyPanelUzytkownika);
-                frame.setSize(700,400);
+                if (loginTextField.getText().equals("") || hasloPasswordField.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
+                }
+                else {
+                    layout.last(glownyPanelUzytkownika);
+                    frame.setSize(700,400);
+                    hasloPasswordField.setText("");
+                    loginTextField.setText("");
+                }
+            }
+        });
+        utwórzKontoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (loginRejestracjaTextField.getText().equals("") || hasloRejestracjaTextField.getText().equals("")
+                || powtorzHasloTextField.getText().equals("") || druzynyComboBox.getSelectedItem().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
+                }
+                else if(!hasloRejestracjaTextField.getText().equals(powtorzHasloTextField.getText()))
+                {
+                    JOptionPane.showMessageDialog(null,"Podane hasła nie są takie same!");
+                }
+            }
+        });
+        wprowadźSprawozdanieButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (idMeczuTextField.getText().equals("") || zolteKartkiTextField.getText().equals("")
+                || czerwoneTextField.getText().equals("") || goleGospodarzyTextField.getText().equals("") || goleGosciTextField.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Dodano sprawozdanie");
+                    idMeczuTextField.setText("");
+                    zolteKartkiTextField.setText("");
+                    czerwoneTextField.setText("");
+                    czerwoneTextField.setText("");
+                    goleGosciTextField.setText("");
+                    goleGospodarzyTextField.setText("");
+                }
             }
         });
     }
