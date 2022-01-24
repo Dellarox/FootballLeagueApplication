@@ -40,7 +40,7 @@ public class AplikacjaAdministratora {
     private JLabel debiutLigowyLabel;
     private JLabel pinLabel;
     private static Connection bazaDanych;
-    private Zapytanie zapytanie;
+    private Zapytanie zapytanie = new Zapytanie();
 
 
     public AplikacjaAdministratora() {
@@ -91,9 +91,11 @@ public class AplikacjaAdministratora {
 
                 }
                 else {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd");
+                    Date date;
                     try {
-                        Osoba osoba = new Osoba(imięTextField.getText(),nazwiskoTextField.getText(), (Date) format.parse(dataUrodzeniaTextField.getText()),narodowoscTextField.getText(),"Sędzia");
+                        date= new Date(format.parse(dataUrodzeniaTextField.getText()).getTime());
+                        Osoba osoba = new Osoba(imięTextField.getText(),nazwiskoTextField.getText(), date,narodowoscTextField.getText(),"Sędzia");
                         zapytanie.wykonajInsertOsoba(bazaDanych, osoba);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
@@ -114,6 +116,7 @@ public class AplikacjaAdministratora {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         frame = new JFrame("Aplikacja administratora");
         frame.setContentPane(new AplikacjaAdministratora().glownyPanel);
         frame.setSize(300,300);

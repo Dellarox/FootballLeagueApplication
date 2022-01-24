@@ -18,6 +18,6 @@ public class Zapytanie {
     public void wykonajInsertOsoba(Connection bazaDanych, Osoba osoba) throws  SQLException
     {
         Statement statement = bazaDanych.createStatement();
-        statement.executeUpdate("INSERT INTO `00018732_kk`.osoby (Imie, Nazwisko, Data_urodzenia, Narodowosc, Rola) VALUES (" + osoba.getImie() + "," + osoba.getNazwisko() + ", " + osoba.getDataUrodzenia() + ", " + osoba.getNarodowosc() + ", " + osoba.getRola() + ");");
+        statement.executeUpdate("INSERT INTO `00018732_kk`.osoby (ID_Osoby, Imie, Nazwisko, Data_urodzenia, Narodowosc, Rola) VALUES ('1','" + osoba.getImie() + "','" + osoba.getNazwisko() + "', '" + osoba.getDataUrodzenia() + "', '" + osoba.getNarodowosc() + "', '" + osoba.getRola() + "');");
     }
 }
