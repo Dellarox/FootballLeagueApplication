@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Administrator.AplikacjaAdministratora">
   <grid id="27dc6" binding="glownyPanel" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="780" height="400"/>
+      <xy x="20" y="20" width="853" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -120,16 +120,6 @@
             </constraints>
             <properties/>
           </component>
-          <component id="35e22" class="javax.swing.JButton" binding="utwórzOsobęButton" default-binding="true">
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="235" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="Utwórz osobę"/>
-            </properties>
-          </component>
           <component id="d9ac" class="javax.swing.JLabel" binding="rokStartuKarieryLabel">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -175,16 +165,6 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="6738d" class="javax.swing.JButton" binding="wróćDoPaneluAdministratoraButton" default-binding="true">
-            <constraints>
-              <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="119" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="Wróć do panelu administratora"/>
-            </properties>
-          </component>
           <component id="6556a" class="javax.swing.JTextField" binding="debiutLigowyTextField">
             <constraints>
               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
@@ -193,9 +173,19 @@
             </constraints>
             <properties/>
           </component>
+          <component id="6738d" class="javax.swing.JButton" binding="wróćDoPaneluAdministratoraButton" default-binding="true">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="119" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Wróć do panelu administratora"/>
+            </properties>
+          </component>
           <component id="321fc" class="javax.swing.JButton" binding="dodajSędziegoButton" default-binding="true">
             <constraints>
-              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Dodaj sędziego"/>

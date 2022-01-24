@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class AplikacjaAdministratora {
 
@@ -19,7 +22,6 @@ public class AplikacjaAdministratora {
     private JTextField dataUrodzeniaTextField;
     private JTextField narodowoscTextField;
     private JButton wróćDoPaneluAdministratoraButton;
-    private JButton utwórzOsobęButton;
     private JPanel panelZmianySkladow;
     private JTable table1;
     private JButton zapiszZmianyButton;
@@ -37,6 +39,9 @@ public class AplikacjaAdministratora {
     private JLabel rokStartuKarieryLabel;
     private JLabel debiutLigowyLabel;
     private JLabel pinLabel;
+    private static Connection bazaDanych;
+    private Zapytanie zapytanie;
+
 
     public AplikacjaAdministratora() {
         utwórzKontoSędziegoButton.addActionListener(new ActionListener() {
@@ -44,13 +49,6 @@ public class AplikacjaAdministratora {
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanel);
                 frame.setSize(800,500);
-                rokStartuKarieryLabel.setVisible(false);
-                debiutLigowyLabel.setVisible(false);
-                pinLabel.setVisible(false);
-                rokStartuKarieryTextField.setVisible(false);
-                debiutLigowyTextField.setVisible(false);
-                pinTextField.setVisible(false);
-                dodajSędziegoButton.setVisible(false);
             }
         });
         wróćDoPaneluAdministratoraButton.addActionListener(new ActionListener() {
@@ -61,48 +59,7 @@ public class AplikacjaAdministratora {
                 nazwiskoTextField.setText("");
                 dataUrodzeniaTextField.setText("");
                 narodowoscTextField.setText("");
-
-                rokStartuKarieryLabel.setVisible(false);
-                debiutLigowyLabel.setVisible(false);
-                pinLabel.setVisible(false);
-                rokStartuKarieryTextField.setVisible(false);
-                debiutLigowyTextField.setVisible(false);
-                pinTextField.setVisible(false);
-                dodajSędziegoButton.setVisible(false);
-                imięLabel.setVisible(true);
-                imięTextField.setVisible(true);
-                nazwiskoLabel.setVisible(true);
-                nazwiskoTextField.setVisible(true);
-                dataUrodzeniaLabel.setVisible(true);
-                dataUrodzeniaTextField.setVisible(true);
-                narodowośćLabel.setVisible(true);
-                narodowoscTextField.setVisible(true);
-                utwórzOsobęButton.setVisible(true);
-
                 frame.setSize(300,300);
-
-            }
-        });
-
-        utwórzOsobęButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                rokStartuKarieryLabel.setVisible(true);
-                debiutLigowyLabel.setVisible(true);
-                pinLabel.setVisible(true);
-                rokStartuKarieryTextField.setVisible(true);
-                debiutLigowyTextField.setVisible(true);
-                pinTextField.setVisible(true);
-                dodajSędziegoButton.setVisible(true);
-                imięLabel.setVisible(false);
-                imięTextField.setVisible(false);
-                nazwiskoLabel.setVisible(false);
-                nazwiskoTextField.setVisible(false);
-                dataUrodzeniaLabel.setVisible(false);
-                dataUrodzeniaTextField.setVisible(false);
-                narodowośćLabel.setVisible(false);
-                narodowoscTextField.setVisible(false);
-                utwórzOsobęButton.setVisible(false);
             }
         });
         zmieńSkładyDrużynButton.addActionListener(new ActionListener() {
@@ -122,9 +79,41 @@ public class AplikacjaAdministratora {
 
             }
         });
+        dodajSędziegoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (dataUrodzeniaTextField.getText().equals("") || imięTextField.getText().equals("")
+                || nazwiskoTextField.getText().equals("") || narodowoscTextField.getText().equals("")
+                || rokStartuKarieryTextField.getText().equals("") || debiutLigowyTextField.getText().equals("")
+                || pinTextField.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
+
+                }
+                else {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Osoba osoba = new Osoba(imięTextField.getText(),nazwiskoTextField.getText(), (Date) format.parse(dataUrodzeniaTextField.getText()),narodowoscTextField.getText(),"Sędzia");
+                        zapytanie.wykonajInsertOsoba(bazaDanych, osoba);
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    //Sedzia sedzia = new Sedzia(rokStartuKarieryTextField.getText(), );
+
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
+        try{
+            bazaDanych = DriverManager.getConnection("jdbc:mysql://@czaplinek.home.pl:3306", "00018732_kk", "K@jetanKr@23");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         frame = new JFrame("Aplikacja administratora");
         frame.setContentPane(new AplikacjaAdministratora().glownyPanel);
         frame.setSize(300,300);
