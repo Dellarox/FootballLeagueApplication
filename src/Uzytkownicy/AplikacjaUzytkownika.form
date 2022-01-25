@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Uzytkownicy.AplikacjaUzytkownika">
   <grid id="27dc6" binding="glownyPanelUzytkownika" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="603" height="404"/>
+      <xy x="20" y="20" width="603" height="429"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -15,7 +15,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="d1c9d" class="javax.swing.JButton" binding="użytkownikButton" default-binding="true">
+          <component id="d1c9d" class="javax.swing.JButton" binding="uzytkownikButton">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -23,7 +23,7 @@
               <text value="Użytkownik"/>
             </properties>
           </component>
-          <component id="7c9f9" class="javax.swing.JButton" binding="sędziaButton" default-binding="true">
+          <component id="7c9f9" class="javax.swing.JButton" binding="sedziaButton">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -82,7 +82,7 @@
               <horizontalAlignment value="2"/>
             </properties>
           </component>
-          <component id="5f796" class="javax.swing.JButton" binding="powrótButton" default-binding="true">
+          <component id="5f796" class="javax.swing.JButton" binding="powrotButton">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -116,7 +116,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="5a69e" class="javax.swing.JButton" binding="powrótButton1" default-binding="true">
+          <component id="5a69e" class="javax.swing.JButton" binding="powrotButton1">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -124,7 +124,7 @@
               <text value="Powrót"/>
             </properties>
           </component>
-          <component id="5336a" class="javax.swing.JButton" binding="utwórzNoweKontoButton" default-binding="true">
+          <component id="5336a" class="javax.swing.JButton" binding="utworzNoweKontoButton">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -184,14 +184,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="dee9d" class="javax.swing.JTable" binding="table1" default-binding="true">
-            <constraints>
-              <grid row="0" column="6" row-span="7" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
           <component id="76a35" class="javax.swing.JButton" binding="wylogujButton" default-binding="true">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
@@ -200,7 +192,7 @@
               <text value="Wyloguj"/>
             </properties>
           </component>
-          <component id="eee16" class="javax.swing.JButton" binding="wprowadźSprawozdanieButton" default-binding="true">
+          <component id="eee16" class="javax.swing.JButton" binding="wprowadzSprawozdanieButton">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -288,6 +280,19 @@
             </constraints>
             <properties/>
           </component>
+          <scrollpane id="c60c7">
+            <constraints>
+              <grid row="0" column="6" row-span="7" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="dee9d" class="javax.swing.JTable" binding="tableSprawozdania">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
       <grid id="ae6a" binding="panelRejestracji" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -298,7 +303,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="8726b" class="javax.swing.JButton" binding="utwórzKontoButton" default-binding="true">
+          <component id="8726b" class="javax.swing.JButton" binding="utworzKontoButton">
             <constraints>
               <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -374,7 +379,7 @@
               <text value="Powtórz hasło:"/>
             </properties>
           </component>
-          <component id="30270" class="javax.swing.JButton" binding="powrótButton2" default-binding="true">
+          <component id="30270" class="javax.swing.JButton" binding="powrotButton2">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -390,7 +395,7 @@
           </component>
         </children>
       </grid>
-      <grid id="49f81" binding="panelWidokow" layout-manager="GridLayoutManager" row-count="15" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="49f81" binding="panelWidokow" layout-manager="GridLayoutManager" row-count="8" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <card name="Card6"/>
@@ -398,15 +403,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6cd59" class="javax.swing.JTable" binding="table2" default-binding="true">
-            <constraints>
-              <grid row="0" column="0" row-span="15" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="89a5c" class="javax.swing.JButton" binding="ilośćFanówDrużynButton" default-binding="true">
+          <component id="89a5c" class="javax.swing.JButton" binding="iloscFanowDruzynButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -416,15 +413,15 @@
           </component>
           <component id="4887f" class="javax.swing.JButton" binding="punktacjaLigiButton" default-binding="true">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Punktacja ligi"/>
             </properties>
           </component>
-          <component id="7b20d" class="javax.swing.JButton" binding="statystykiSędziówButton" default-binding="true">
+          <component id="7b20d" class="javax.swing.JButton" binding="statystykiSedziowButton">
             <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Statystyki sędziów"/>
@@ -432,7 +429,7 @@
           </component>
           <component id="23bbb" class="javax.swing.JButton" binding="terminarzButton" default-binding="true">
             <constraints>
-              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Terminarz"/>
@@ -440,7 +437,7 @@
           </component>
           <component id="c7325" class="javax.swing.JButton" binding="trenerzyButton" default-binding="true">
             <constraints>
-              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Trenerzy"/>
@@ -448,7 +445,7 @@
           </component>
           <component id="1de61" class="javax.swing.JButton" binding="wylogujButton1" default-binding="true">
             <constraints>
-              <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Wyloguj"/>
@@ -456,12 +453,25 @@
           </component>
           <component id="b6e3a" class="javax.swing.JButton" binding="zawodnicyButton" default-binding="true">
             <constraints>
-              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Zawodnicy"/>
             </properties>
           </component>
+          <scrollpane id="50364">
+            <constraints>
+              <grid row="0" column="0" row-span="8" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="6cd59" class="javax.swing.JTable" binding="tableWidoki">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
     </children>

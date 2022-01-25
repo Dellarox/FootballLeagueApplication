@@ -1,6 +1,7 @@
 package Administrator;
 
-import javax.swing.text.rtf.RTFEditorKit;
+import Encje.*;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -22,6 +23,20 @@ public class Zapytanie {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         statement.executeUpdate("INSERT INTO `00018732_kk`.uzytkownicy (Pseudonim, Data_zalozenia_konta, ID_Ulubionej_Druzyny, Haslo) VALUES ('" + uzytkownik.getPseudonim() + "','" + format.format(uzytkownik.getDataZalozeniaKonta()) + "', " + uzytkownik.getIdUlubionejDruzyny() + ", '" + uzytkownik.getHaslo() + "');");
-        //format.format(uzytkownik.getDataZalozeniaKonta());
+    }
+
+    public void wykonajInsertSprawozdanieSedziego(Connection bazaDanych, SprawozdanieSedziego sprawozdanieSedziego) throws SQLException {
+        Statement statement = bazaDanych.createStatement();
+        statement.executeUpdate("INSERT INTO `00018732_kk`.sprawozdanie_sedziego (Ilosc_zoltych_kartek, Ilosc_czerwonych_kartek, Ilosc_goli_gospodarzy, Ilosc_goli_gosci, ID_Meczu, ID_Sedziego) VALUES (" + sprawozdanieSedziego.getIlosc_zoltych_kartek() + ", " + sprawozdanieSedziego.getIlosc_czerwonych_kartek() +", " + sprawozdanieSedziego.getIlosc_goli_gospodarzy() + ", " + sprawozdanieSedziego.getIlosc_goli_gosci() + ", " + sprawozdanieSedziego.getID_Meczu() + ", " + sprawozdanieSedziego.getID_Sedziego() +");");
+    }
+
+    public void wykonajInsertTrener(Connection bazaDanych, Trener trener) throws SQLException {
+        Statement statement = bazaDanych.createStatement();
+        statement.executeUpdate("INSERT INTO `00018732_kk`.trenerzy (Data_rozpoczecia_kariery_trenerskiej, Data_zakonczenia_kariery_trenerskiej, Preferowana_formacja, ID_Osoby, ID_Trenowanej_Druzyny) VALUES ('" + trener.getDataRozpoczeciaKarieryTrenerskiej() + "', null, '" + trener.getPreferowanaFormacja() + "', "+ trener.getIDOsoby() + ", " + trener.getIDTrenowanejDruzyny() + ");");
+    }
+
+    public void wykonajInsertZawodnik(Connection bazaDanych, Zawodnik zawodnik) throws SQLException {
+        Statement statement = bazaDanych.createStatement();
+        statement.executeUpdate("INSERT INTO `00018732_kk`.zawodnicy (Data_rozpoczecia_kariery_pilkarskiej, Data_zakonczenia_kariery_pilkarskiej, Pozycja, ID_Osoby, ID_Druzyny) VALUES ('" + zawodnik.getDataRozpoczeciaKarieryPilkarskiej() + "', null, '" + zawodnik.getPozycja() + "', "+ zawodnik.getIdOsoby() + ", " + zawodnik.getIdDruzyny() + ");");
     }
 }

@@ -1,6 +1,7 @@
 package Uzytkownicy;
 
-import Administrator.Uzytkownik;
+import Encje.SprawozdanieSedziego;
+import Encje.Uzytkownik;
 import Administrator.Zapytanie;
 
 import javax.swing.*;
@@ -8,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AplikacjaUzytkownika {
@@ -19,37 +19,37 @@ public class AplikacjaUzytkownika {
     private JPanel panelWyboruLogowania;
     private JPanel panelLogowaniaSedziego;
     private JPanel panelLogowaniaUzytkownika;
-    private JButton użytkownikButton;
-    private JButton sędziaButton;
-    private JButton powrótButton;
+    private JButton uzytkownikButton;
+    private JButton sedziaButton;
+    private JButton powrotButton;
     private JButton zalogujButton;
     private JTextField idTextField;
     private JTextField pinTextField;
-    private JButton powrótButton1;
+    private JButton powrotButton1;
     private JButton zalogujButton1;
-    private JButton utwórzNoweKontoButton;
+    private JButton utworzNoweKontoButton;
     private JTextField loginTextField;
     private JTextField hasloTextField;
     private JPanel panelSprawozdan;
-    private JTable table1;
+    private JTable tableSprawozdania;
     private JButton wylogujButton;
-    private JButton wprowadźSprawozdanieButton;
+    private JButton wprowadzSprawozdanieButton;
     private JTextField idMeczuTextField;
     private JTextField zolteKartkiTextField;
     private JTextField czerwoneTextField;
     private JTextField goleGospodarzyTextField;
     private JTextField goleGosciTextField;
     private JPanel panelRejestracji;
-    private JButton utwórzKontoButton;
+    private JButton utworzKontoButton;
     private JTextField loginRejestracjaTextField;
     private JPasswordField hasloRejestracjaTextField;
     private JPasswordField powtorzHasloTextField;
-    private JButton powrótButton2;
+    private JButton powrotButton2;
     private JComboBox druzynyComboBox;
-    private JTable table2;
-    private JButton ilośćFanówDrużynButton;
+    private JTable tableWidoki;
+    private JButton iloscFanowDruzynButton;
     private JButton punktacjaLigiButton;
-    private JButton statystykiSędziówButton;
+    private JButton statystykiSedziowButton;
     private JButton terminarzButton;
     private JButton trenerzyButton;
     private JButton wylogujButton1;
@@ -59,6 +59,7 @@ public class AplikacjaUzytkownika {
     private JPasswordField hasloPasswordField;
     private static Connection bazaDanych;
     private Zapytanie zapytanie = new Zapytanie();
+    private int zalogowanySedzia;
 
     public void ustawComboBox()
     {
@@ -76,7 +77,7 @@ public class AplikacjaUzytkownika {
         druzynyComboBox.addItem("Juventus F.C.");
     }
     public AplikacjaUzytkownika() {
-        użytkownikButton.addActionListener(new ActionListener() {
+        uzytkownikButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
@@ -85,7 +86,7 @@ public class AplikacjaUzytkownika {
 
             }
         });
-        powrótButton1.addActionListener(new ActionListener() {
+        powrotButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanelUzytkownika);
@@ -94,14 +95,14 @@ public class AplikacjaUzytkownika {
                 hasloPasswordField.setText("");
             }
         });
-        sędziaButton.addActionListener(new ActionListener() {
+        sedziaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
                 frame.setSize(400,300);
             }
         });
-        powrótButton.addActionListener(new ActionListener() {
+        powrotButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanelUzytkownika);
@@ -142,6 +143,7 @@ public class AplikacjaUzytkownika {
                         {
                             layout.next(glownyPanelUzytkownika);
                             layout.next(glownyPanelUzytkownika);
+                            zalogowanySedzia = resultSet.getInt("ID_Sedziego");
                             frame.setSize(600,400);
                             idTextField.setText("");
                             pinPasswordField.setText("");
@@ -153,7 +155,7 @@ public class AplikacjaUzytkownika {
                 }
             }
         });
-        powrótButton2.addActionListener(new ActionListener() {
+        powrotButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.previous(glownyPanelUzytkownika);
@@ -165,7 +167,7 @@ public class AplikacjaUzytkownika {
                 druzynyComboBox.setSelectedIndex(0);
             }
         });
-        utwórzNoweKontoButton.addActionListener(new ActionListener() {
+        utworzNoweKontoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
@@ -190,14 +192,30 @@ public class AplikacjaUzytkownika {
                     JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
                 }
                 else {
-                    layout.last(glownyPanelUzytkownika);
-                    frame.setSize(700,400);
-                    hasloPasswordField.setText("");
-                    loginTextField.setText("");
+                    Statement statement = null;
+                    try {
+                        statement = bazaDanych.createStatement();
+                        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.uzytkownicy WHERE Pseudonim = '" + loginTextField.getText() + "';");
+                        if(resultSet.next()==false || !resultSet.getString("Haslo").equals(hasloPasswordField.getText()))
+                        {
+                            JOptionPane.showMessageDialog(null,"Niepoprawny login lub hasło!");
+                        }
+                        else
+                        {
+                            layout.last(glownyPanelUzytkownika);
+                            frame.setSize(700,400);
+                            hasloPasswordField.setText("");
+                            loginTextField.setText("");
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
-        utwórzKontoButton.addActionListener(new ActionListener() {
+        utworzKontoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (loginRejestracjaTextField.getText().equals("") || hasloRejestracjaTextField.getText().equals("")
@@ -222,7 +240,7 @@ public class AplikacjaUzytkownika {
                 }
             }
         });
-        wprowadźSprawozdanieButton.addActionListener(new ActionListener() {
+        wprowadzSprawozdanieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (idMeczuTextField.getText().equals("") || zolteKartkiTextField.getText().equals("")
@@ -232,13 +250,25 @@ public class AplikacjaUzytkownika {
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null,"Dodano sprawozdanie");
-                    idMeczuTextField.setText("");
-                    zolteKartkiTextField.setText("");
-                    czerwoneTextField.setText("");
-                    czerwoneTextField.setText("");
-                    goleGosciTextField.setText("");
-                    goleGospodarzyTextField.setText("");
+                    SprawozdanieSedziego sprawozdanieSedziego = new SprawozdanieSedziego(Integer.parseInt(zolteKartkiTextField.getText()),
+                                                                                         Integer.parseInt(czerwoneTextField.getText()),
+                                                                                         Integer.parseInt(goleGospodarzyTextField.getText()),
+                                                                                         Integer.parseInt(goleGosciTextField.getText()),
+                                                                                         Integer.parseInt(idMeczuTextField.getText()),
+                                                                                         zalogowanySedzia);
+                    try {
+                        zapytanie.wykonajInsertSprawozdanieSedziego(bazaDanych,sprawozdanieSedziego);
+                        JOptionPane.showMessageDialog(null,"Dodano sprawozdanie");
+                        idMeczuTextField.setText("");
+                        zolteKartkiTextField.setText("");
+                        czerwoneTextField.setText("");
+                        czerwoneTextField.setText("");
+                        goleGosciTextField.setText("");
+                        goleGospodarzyTextField.setText("");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
