@@ -10,11 +10,10 @@ public class Sedzia {
     private Date dataZakonczeniaKarierySedziowskiej;
     private int pinSedziego;
 
-    public Sedzia(int rokStartuKarieryMiedzynarodowej, int idOsoby, Date dataDebiutuLigowego, Date dataZakonczeniaKarierySedziowskiej, int pinSedziego) {
+    public Sedzia(int rokStartuKarieryMiedzynarodowej, int idOsoby, Date dataDebiutuLigowego, int pinSedziego) {
         this.rokStartuKarieryMiedzynarodowej = rokStartuKarieryMiedzynarodowej;
         this.idOsoby = idOsoby;
         this.dataDebiutuLigowego = dataDebiutuLigowego;
-        this.dataZakonczeniaKarierySedziowskiej = dataZakonczeniaKarierySedziowskiej;
         this.pinSedziego = pinSedziego;
     }
 

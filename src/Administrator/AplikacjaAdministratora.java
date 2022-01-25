@@ -17,13 +17,13 @@ public class AplikacjaAdministratora {
     private JButton zmieńSkładyDrużynButton;
     private JPanel panelStartowy;
     private JPanel panelTworzeniaKontaSedziego;
-    private JTextField imięTextField;
+    private JTextField imieTextField;
     private JTextField nazwiskoTextField;
     private JTextField dataUrodzeniaTextField;
     private JTextField narodowoscTextField;
     private JButton wróćDoPaneluAdministratoraButton;
     private JPanel panelZmianySkladow;
-    private JTable table1;
+    private JTable tableSkłady;
     private JButton zapiszZmianyButton;
     private JButton usuńZawodnikaButton;
     private JButton dodajZawodnikaButton;
@@ -51,17 +51,19 @@ public class AplikacjaAdministratora {
                 frame.setSize(800,500);
             }
         });
+
         wróćDoPaneluAdministratoraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.previous(glownyPanel);
-                imięTextField.setText("");
+                imieTextField.setText("");
                 nazwiskoTextField.setText("");
                 dataUrodzeniaTextField.setText("");
                 narodowoscTextField.setText("");
                 frame.setSize(300,300);
             }
         });
+
         zmieńSkładyDrużynButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -70,19 +72,19 @@ public class AplikacjaAdministratora {
                 layout.next(glownyPanel);
             }
         });
+
         wrócDoPaneluAdministratoraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanel);
                 frame.setSize(400,300);
-
-
             }
         });
+
         dodajSędziegoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (dataUrodzeniaTextField.getText().equals("") || imięTextField.getText().equals("")
+                if (dataUrodzeniaTextField.getText().equals("") || imieTextField.getText().equals("")
                 || nazwiskoTextField.getText().equals("") || narodowoscTextField.getText().equals("")
                 || rokStartuKarieryTextField.getText().equals("") || debiutLigowyTextField.getText().equals("")
                 || pinTextField.getText().equals(""))
@@ -95,16 +97,22 @@ public class AplikacjaAdministratora {
                     Date date;
                     try {
                         date= new Date(format.parse(dataUrodzeniaTextField.getText()).getTime());
-                        Osoba osoba = new Osoba(imięTextField.getText(),nazwiskoTextField.getText(), date,narodowoscTextField.getText(),"Sędzia");
+                        Osoba osoba = new Osoba(imieTextField.getText(),nazwiskoTextField.getText(), date, narodowoscTextField.getText(),"Sędzia");
                         zapytanie.wykonajInsertOsoba(bazaDanych, osoba);
+
+                        Statement statement = bazaDanych.createStatement();
+                        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.osoby WHERE Imie = '" + imieTextField.getText() + "' AND Nazwisko = '" + nazwiskoTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscTextField.getText() + "';");
+
+                        int idOsoby = resultSet.getInt("ID_Osoby");
+
+                        date = new Date(format.parse(debiutLigowyTextField.getText()).getTime());
+                        Sedzia sedzia = new Sedzia(Integer.parseInt(rokStartuKarieryTextField.getText()), idOsoby, date, Integer.parseInt(pinTextField.getText()));
+                        zapytanie.wykonajInsertSędzia(bazaDanych, sedzia);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
-
-                    //Sedzia sedzia = new Sedzia(rokStartuKarieryTextField.getText(), );
-
                 }
             }
         });
