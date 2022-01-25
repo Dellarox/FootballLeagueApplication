@@ -1,9 +1,15 @@
 package Uzytkownicy;
 
+import Administrator.Uzytkownik;
+import Administrator.Zapytanie;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AplikacjaUzytkownika {
 
@@ -51,6 +57,8 @@ public class AplikacjaUzytkownika {
     private JPanel panelWidokow;
     private JPasswordField pinPasswordField;
     private JPasswordField hasloPasswordField;
+    private static Connection bazaDanych;
+    private Zapytanie zapytanie = new Zapytanie();
 
     public void ustawComboBox()
     {
@@ -123,11 +131,25 @@ public class AplikacjaUzytkownika {
                 }
                 else
                 {
-                    layout.next(glownyPanelUzytkownika);
-                    layout.next(glownyPanelUzytkownika);
-                    frame.setSize(600,400);
-                    idTextField.setText("");
-                    pinPasswordField.setText("");
+                    try {
+                        Statement statement = bazaDanych.createStatement();
+                        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.sedziowie WHERE ID_Sedziego = '" + Integer.parseInt(idTextField.getText()) + "';");
+                        if (resultSet.next()==false || resultSet.getInt("PIN_Sedziego")!=Integer.parseInt(pinPasswordField.getText()))
+                        {
+                            JOptionPane.showMessageDialog(null,"Niepoprawny login lub hasło!");
+                        }
+                        else
+                        {
+                            layout.next(glownyPanelUzytkownika);
+                            layout.next(glownyPanelUzytkownika);
+                            frame.setSize(600,400);
+                            idTextField.setText("");
+                            pinPasswordField.setText("");
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -187,6 +209,17 @@ public class AplikacjaUzytkownika {
                 {
                     JOptionPane.showMessageDialog(null,"Podane hasła nie są takie same!");
                 }
+                else
+                {
+
+                    Date aktualnaData = new Date();
+                    Uzytkownik uzytkownik = new Uzytkownik(loginRejestracjaTextField.getText(),aktualnaData,druzynyComboBox.getSelectedIndex(),hasloRejestracjaTextField.getText());
+                    try {
+                        zapytanie.wykonajInsertUzytkownik(bazaDanych,uzytkownik);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
         wprowadźSprawozdanieButton.addActionListener(new ActionListener() {
@@ -212,6 +245,12 @@ public class AplikacjaUzytkownika {
     }
 
     public static void main(String[] args) {
+        try{
+            bazaDanych = DriverManager.getConnection("jdbc:mysql://@czaplinek.home.pl:3306", "00018732_kk", "K@jetanKr@23");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         frame = new JFrame("Aplikacja użytkownika");
         frame.setContentPane(new AplikacjaUzytkownika().glownyPanelUzytkownika);
         frame.setSize(300,300);

@@ -102,17 +102,29 @@ public class AplikacjaAdministratora {
 
                         Statement statement = bazaDanych.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.osoby WHERE Imie = '" + imieTextField.getText() + "' AND Nazwisko = '" + nazwiskoTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscTextField.getText() + "';");
-
+                        resultSet.next();
                         int idOsoby = resultSet.getInt("ID_Osoby");
 
-                        date = new Date(format.parse(debiutLigowyTextField.getText()).getTime());
-                        Sedzia sedzia = new Sedzia(Integer.parseInt(rokStartuKarieryTextField.getText()), idOsoby, date, Integer.parseInt(pinTextField.getText()));
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy MM dd");
+                        Date date1 = new Date(format1.parse(debiutLigowyTextField.getText()).getTime());
+
+                        Sedzia sedzia = new Sedzia(Integer.parseInt(rokStartuKarieryTextField.getText()), idOsoby, date1, Integer.parseInt(pinTextField.getText()));
+                        System.out.println(sedzia.getDataDebiutuLigowego().toString());
                         zapytanie.wykonajInsertSędzia(bazaDanych, sedzia);
+                        JOptionPane.showMessageDialog(null,"Utworzono konto sędziego");
+                        imieTextField.setText("");
+                        nazwiskoTextField.setText("");
+                        dataUrodzeniaTextField.setText("");
+                        narodowoscTextField.setText("");
+                        rokStartuKarieryTextField.setText("");
+                        debiutLigowyTextField.setText("");
+                        pinTextField.setText("");
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
+
                 }
             }
         });

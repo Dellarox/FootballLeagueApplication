@@ -1,6 +1,6 @@
 package Administrator;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Sedzia {
     private int idSedziego;
