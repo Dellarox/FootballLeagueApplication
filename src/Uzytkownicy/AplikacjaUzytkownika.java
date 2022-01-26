@@ -287,6 +287,5 @@ public class AplikacjaUzytkownika {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.getContentPane().setLayout(layout);
-
     }
 }

@@ -31,7 +31,7 @@ public class AplikacjaAdministratora extends JPanel{
     private JPanel panelZmianySkladow;
     private JTable tableSklady;
     private JButton odswiezTabeleZawodnicyButton;
-    private JButton usunZawodnikaButton;
+    private JButton zakonczKariereButton;
     private JButton dodajZawodnikaButton;
     private JButton wrocDoPaneluAdministratoraButton;
     private JLabel nazwiskoLabel;
@@ -50,7 +50,7 @@ public class AplikacjaAdministratora extends JPanel{
     private JTable tableTrenerzy;
     private JButton powrotButton;
     private JButton dodajTreneraButton;
-    private JButton usunTreneraButton;
+    private JButton zakonczKariereTreneraButton;
     private JButton odswiezTabeleButton2;
     private JButton odswiezTabeleButton;
     private static Connection bazaDanych;
@@ -72,8 +72,15 @@ public class AplikacjaAdministratora extends JPanel{
     private JTextField rozpoczecieKarieryZawodnikaTextField;
     private JComboBox pozycjaComboBox;
     private JComboBox druzynyZawodnikaComboBox;
+    private JButton zakonczKariereSedziegoButton;
+    private JButton zamianaWTreneraButton;
+    private JPanel panelZamiany;
+    private JComboBox ulubionaFormacjaComboBox;
+    private JComboBox trenowanaDruzynaComboBox;
+    private JButton zamienWTreneraButton;
     private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"ID Trenera", "Data rozpoczecia kariery trenerskiej", "Data zakonczenia kariery trenerskiej", "Preferowana formacja", "ID Osoby", "ID Trenowanej druzyny"});
     private DefaultTableModel defaultTableModelZawodnicy = new DefaultTableModel(null, new String[]{"ID Zawodnika", "Data rozpoczecia kariery", "Data zakonczenia kariery", "Pozycja", "ID Osoby", "ID Druzyny"});
+    private int wierszZawodnika;
 
     public void ustawComboBoxy()
     {
@@ -109,6 +116,22 @@ public class AplikacjaAdministratora extends JPanel{
         preferowaneFormacjeComboBox.addItem("3-5-2");
         preferowaneFormacjeComboBox.addItem("4-3-3");
         preferowaneFormacjeComboBox.addItem("4-2-3-1");
+        ulubionaFormacjaComboBox.addItem("");
+        ulubionaFormacjaComboBox.addItem("4-4-2");
+        ulubionaFormacjaComboBox.addItem("3-5-2");
+        ulubionaFormacjaComboBox.addItem("4-3-3");
+        ulubionaFormacjaComboBox.addItem("4-2-3-1");
+        trenowanaDruzynaComboBox.addItem("");
+        trenowanaDruzynaComboBox.addItem("FC Bayern Monachium");
+        trenowanaDruzynaComboBox.addItem("Borussia Dortmund");
+        trenowanaDruzynaComboBox.addItem("Manchester City");
+        trenowanaDruzynaComboBox.addItem("Manchester United");
+        trenowanaDruzynaComboBox.addItem("Paris Saint-Germain");
+        trenowanaDruzynaComboBox.addItem("Olympique Lyon");
+        trenowanaDruzynaComboBox.addItem("FC Barcelona");
+        trenowanaDruzynaComboBox.addItem("Real Madrid");
+        trenowanaDruzynaComboBox.addItem("Inter Mediolan");
+        trenowanaDruzynaComboBox.addItem("Juventus F.C.");
     }
 
     public AplikacjaAdministratora() {
@@ -171,19 +194,24 @@ public class AplikacjaAdministratora extends JPanel{
                     Date date;
                     try {
                         date= new Date(format.parse(dataUrodzeniaTextField.getText()).getTime());
-                        Osoba osoba = new Osoba(imieTextField.getText(),nazwiskoTextField.getText(), date, narodowoscTextField.getText(),"Sędzia");
+                        Osoba osoba = new Osoba(imieTextField.getText(),nazwiskoTextField.getText(), date, narodowoscTextField.getText(), "Sedzia");
                         zapytanie.wykonajInsertOsoba(bazaDanych, osoba);
 
                         Statement statement = bazaDanych.createStatement();
-                        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.osoby WHERE Imie = '" + imieTextField.getText() + "' AND Nazwisko = '" + nazwiskoTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscTextField.getText() + "' AND Rola = 'Sedzia';");
-                        resultSet.next();
-                        int idOsoby = resultSet.getInt("ID_Osoby");
+                        ResultSet resultSet = statement.executeQuery("SELECT ID_Osoby FROM `00018732_kk`.osoby WHERE Imie = '" + imieTextField.getText() + "' AND Nazwisko = '" + nazwiskoTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscTextField.getText() + "' AND Rola = 'Sedzia';");
+
+                        int idOsoby = 0;
+                        while(resultSet.next()){
+                            idOsoby = resultSet.getInt("ID_Osoby");
+                            System.out.println(idOsoby);
+                        }
+
 
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy MM dd");
                         Date date1 = new Date(format1.parse(debiutLigowyTextField.getText()).getTime());
 
                         Sedzia sedzia = new Sedzia(Integer.parseInt(rokStartuKarieryTextField.getText()), idOsoby, date1, Integer.parseInt(pinTextField.getText()));
-                        zapytanie.wykonajInsertSędzia(bazaDanych, sedzia);
+                        zapytanie.wykonajInsertSedzia(bazaDanych, sedzia);
                         JOptionPane.showMessageDialog(null,"Utworzono konto sędziego");
                         imieTextField.setText("");
                         nazwiskoTextField.setText("");
@@ -193,9 +221,7 @@ public class AplikacjaAdministratora extends JPanel{
                         debiutLigowyTextField.setText("");
                         pinTextField.setText("");
                         odswiezTabeleSedziowie();
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    } catch (SQLException ex) {
+                    } catch (ParseException | SQLException ex) {
                         ex.printStackTrace();
                     }
 
@@ -205,8 +231,11 @@ public class AplikacjaAdministratora extends JPanel{
         edytujTabeleTrenerowButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                layout.last(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
                 frame.setSize(1500,600);
+                odswiezTabeleTrenerzy();
             }
         });
         powrotButton.addActionListener(new ActionListener() {
@@ -243,8 +272,11 @@ public class AplikacjaAdministratora extends JPanel{
 
                         Statement statement = bazaDanych.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.osoby WHERE Imie = '" + imieTreneraTextField.getText() + "' AND Nazwisko = '" + nazwiskoTreneraTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscTreneraTextField.getText() + "' AND Rola = 'Trener';");
-                        resultSet.next();
-                        int idOsoby = resultSet.getInt("ID_Osoby");
+
+                        int idOsoby = 0;
+
+                        while(resultSet.next())
+                            idOsoby = resultSet.getInt("ID_Osoby");
 
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy MM dd");
                         Date date1 = new Date(format1.parse(rozpoczecieKarieryTreneraTextField.getText()).getTime());
@@ -260,12 +292,10 @@ public class AplikacjaAdministratora extends JPanel{
                         preferowaneFormacjeComboBox.setSelectedIndex(0);
                         druzynyComboBox.setSelectedIndex(0);
                         odswiezTabeleTrenerzy();
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    } catch (SQLException ex) {
+                    } catch (ParseException | SQLException ex) {
                         ex.printStackTrace();
                     }
-
+                    odswiezTabeleTrenerzy();
                 }
             }
         });
@@ -297,8 +327,11 @@ public class AplikacjaAdministratora extends JPanel{
 
                         Statement statement = bazaDanych.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.osoby WHERE Imie = '" + imieZawodnikaTextField.getText() + "' AND Nazwisko = '" + nazwiskoZawodnikaTextField.getText() + "' AND Data_urodzenia = '" + date + "' AND Narodowosc = '" + narodowoscZawodnikaTextField.getText() + "' AND Rola = 'Zawodnik';");
-                        resultSet.next();
-                        int idOsoby = resultSet.getInt("ID_Osoby");
+
+                        int idOsoby = 0;
+
+                        while(resultSet.next())
+                            idOsoby = resultSet.getInt("ID_Osoby");
 
                         SimpleDateFormat format1 = new SimpleDateFormat("yyyy MM dd");
                         Date date1 = new Date(format1.parse(rozpoczecieKarieryZawodnikaTextField.getText()).getTime());
@@ -314,12 +347,10 @@ public class AplikacjaAdministratora extends JPanel{
                         pozycjaComboBox.setSelectedIndex(0);
                         druzynyZawodnikaComboBox.setSelectedIndex(0);
                         odswiezTabeleTrenerzy();
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    } catch (SQLException ex) {
+                    } catch (ParseException | SQLException ex) {
                         ex.printStackTrace();
                     }
-
+                    odswiezTabeleZawodnicy();
                 }
             }
         });
@@ -327,6 +358,90 @@ public class AplikacjaAdministratora extends JPanel{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 odswiezTabeleZawodnicy();
+            }
+        });
+        zakonczKariereSedziegoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int wiersz = tableSedziowie.getSelectedRow();
+                String komorkaIdSedziego = tableSedziowie.getModel().getValueAt(wiersz, 0).toString();
+                String sql = "UPDATE `00018732_kk`.sedziowie SET Data_zakonczenia_kariery_sedziowskiej = CURDATE() WHERE ID_Sedziego = " + komorkaIdSedziego;
+
+                try {
+                    Statement statement = bazaDanych.createStatement();
+                    statement.executeUpdate(sql);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                odswiezTabeleSedziowie();
+            }
+        });
+        zakonczKariereButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int wiersz = tableSklady.getSelectedRow();
+
+                String komorkaIdZawodnika = tableSklady.getModel().getValueAt(wiersz, 0).toString();
+                String sql = "UPDATE `00018732_kk`.zawodnicy SET Data_zakonczenia_kariery_pilkarskiej = CURDATE(), ID_Druzyny = null WHERE ID_Zawodnika = " + komorkaIdZawodnika;
+
+                try {
+                    Statement statement = bazaDanych.createStatement();
+                    statement.executeUpdate(sql);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                odswiezTabeleZawodnicy();
+            }
+        });
+        zakonczKariereTreneraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int wiersz = tableTrenerzy.getSelectedRow();
+
+                String komorkaIdTrenera = tableTrenerzy.getModel().getValueAt(wiersz, 0).toString();
+                String sql = "UPDATE `00018732_kk`.trenerzy SET Data_zakonczenia_kariery_trenerskiej = CURDATE(), ID_Trenowanej_Druzyny = null WHERE ID_Trenera = + " + komorkaIdTrenera;
+                try {
+                    Statement statement = bazaDanych.createStatement();
+                    statement.executeUpdate(sql);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                odswiezTabeleTrenerzy();
+            }
+        });
+        zamianaWTreneraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                frame.setSize(500,400);
+
+            }
+        });
+        zamienWTreneraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                wierszZawodnika = tableSklady.getSelectedRow();
+
+                String komorkaIdZawodnika = tableSklady.getModel().getValueAt(wierszZawodnika, 0).toString();
+                String komorkaIdOsoby = tableSklady.getModel().getValueAt(wierszZawodnika, 4).toString();
+                String sqlUsuniecie = "DELETE FROM `00018732_kk`.zawodnicy WHERE ID_Zawodnika = + " + komorkaIdZawodnika;
+                String sqlZmianaRoli = "UPDATE `00018732_kk`.osoby SET Rola = 'Trener' WHERE ID_Osoby = " + komorkaIdOsoby;
+                String sqlDodajDoTrener = "INSERT INTO `00018732_kk`.trenerzy (Data_rozpoczecia_kariery_trenerskiej, Data_zakonczenia_kariery_trenerskiej, Preferowana_formacja, ID_Osoby, ID_Trenowanej_Druzyny) VALUES (CURDATE(), null, '" + ulubionaFormacjaComboBox.getSelectedItem().toString() + "', " + komorkaIdOsoby + ", " + trenowanaDruzynaComboBox.getSelectedIndex() + ");";
+                try {
+                    Statement statement = bazaDanych.createStatement();
+                    statement.executeUpdate(sqlUsuniecie);
+                    statement.executeUpdate(sqlZmianaRoli);
+                    statement.executeUpdate(sqlDodajDoTrener);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                odswiezTabeleTrenerzy();
+                odswiezTabeleZawodnicy();
+                layout.previous(glownyPanel);
+                layout.previous(glownyPanel);
+                frame.setSize(1500,600);
+
             }
         });
     }

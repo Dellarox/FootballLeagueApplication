@@ -12,7 +12,7 @@ public class Zapytanie {
         statement.executeUpdate("INSERT INTO `00018732_kk`.osoby (Imie, Nazwisko, Data_urodzenia, Narodowosc, Rola) VALUES ('" + osoba.getImie() + "', '" + osoba.getNazwisko() + "', '" + osoba.getDataUrodzenia() + "', '" + osoba.getNarodowosc() + "', '" + osoba.getRola() + "');");
     }
 
-    public void wykonajInsertSędzia(Connection bazaDanych, Sedzia sedzia) throws SQLException {
+    public void wykonajInsertSedzia(Connection bazaDanych, Sedzia sedzia) throws SQLException {
         Statement statement = bazaDanych.createStatement();
 
         statement.executeUpdate("INSERT INTO `00018732_kk`.sedziowie (Rok_startu_kariery_miedzynarodowej, ID_Osoby, Data_debiutu_ligowego, Data_zakonczenia_kariery_sedziowskiej, PIN_Sedziego) VALUES (" + sedzia.getRokStartuKarieryMiedzynarodowej() + ", " + sedzia.getIdOsoby() + ", '" + sedzia.getDataDebiutuLigowego() + "', null, " + sedzia.getPinSedziego() + ");");
@@ -37,6 +37,6 @@ public class Zapytanie {
 
     public void wykonajInsertZawodnik(Connection bazaDanych, Zawodnik zawodnik) throws SQLException {
         Statement statement = bazaDanych.createStatement();
-        statement.executeUpdate("INSERT INTO `00018732_kk`.zawodnicy (Data_rozpoczecia_kariery_pilkarskiej, Data_zakonczenia_kariery_pilkarskiej, Pozycja, ID_Osoby, ID_Druzyny) VALUES ('" + zawodnik.getDataRozpoczeciaKarieryPilkarskiej() + "', null, '" + zawodnik.getPozycja() + "', "+ zawodnik.getIdOsoby() + ", " + zawodnik.getIdDruzyny() + ");");
+        statement.executeUpdate("INSERT INTO `00018732_kk`.zawodnicy (Data_rozpoczecia_kariery_pilkarskiej, Data_zakonczenia_kariery_pilkarskiej, Pozycja, ID_Osoby, ID_Druzyny) VALUES ('" + zawodnik.getDataRozpoczeciaKarieryPilkarskiej() + "', null, '" + zawodnik.getPozycja() + "', " + zawodnik.getIdOsoby() + ", " + zawodnik.getIdDruzyny() + ");");
     }
 }
