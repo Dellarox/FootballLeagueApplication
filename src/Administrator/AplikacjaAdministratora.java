@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class AplikacjaAdministratora extends JPanel{
 
@@ -74,13 +75,22 @@ public class AplikacjaAdministratora extends JPanel{
     private JComboBox druzynyZawodnikaComboBox;
     private JButton zakonczKariereSedziegoButton;
     private JButton zamianaWTreneraButton;
-    private JPanel panelZamiany;
+    private JPanel panelZamianyZawodnikaWTrenera;
     private JComboBox ulubionaFormacjaComboBox;
     private JComboBox trenowanaDruzynaComboBox;
     private JButton zamienWTreneraButton;
+    private JButton zmienDruzyneTrenerowiWEdycjiButton;
+    private JComboBox zmianaDruzynyTrenerowiComboBox;
+    private JButton zmianaDruzynyTrenerowiButton;
+    private JPanel panelZmianyDruzynyTrenerowi;
+    private JPanel panelZmianyDruzynyZawodnikowi;
+    private JButton zmienDruzyneZawodnikowiButton;
+    private JButton zmianaDruzynyZawodnikowiButton;
+    private JComboBox zmianaDruzynyZawodnikowiComboBox;
     private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"ID Trenera", "Data rozpoczecia kariery trenerskiej", "Data zakonczenia kariery trenerskiej", "Preferowana formacja", "ID Osoby", "ID Trenowanej druzyny"});
     private DefaultTableModel defaultTableModelZawodnicy = new DefaultTableModel(null, new String[]{"ID Zawodnika", "Data rozpoczecia kariery", "Data zakonczenia kariery", "Pozycja", "ID Osoby", "ID Druzyny"});
     private int wierszZawodnika;
+    private int wierszTrenera;
 
     public void ustawComboBoxy()
     {
@@ -132,6 +142,28 @@ public class AplikacjaAdministratora extends JPanel{
         trenowanaDruzynaComboBox.addItem("Real Madrid");
         trenowanaDruzynaComboBox.addItem("Inter Mediolan");
         trenowanaDruzynaComboBox.addItem("Juventus F.C.");
+        zmianaDruzynyTrenerowiComboBox.addItem("");
+        zmianaDruzynyTrenerowiComboBox.addItem("FC Bayern Monachium");
+        zmianaDruzynyTrenerowiComboBox.addItem("Borussia Dortmund");
+        zmianaDruzynyTrenerowiComboBox.addItem("Manchester City");
+        zmianaDruzynyTrenerowiComboBox.addItem("Manchester United");
+        zmianaDruzynyTrenerowiComboBox.addItem("Paris Saint-Germain");
+        zmianaDruzynyTrenerowiComboBox.addItem("Olympique Lyon");
+        zmianaDruzynyTrenerowiComboBox.addItem("FC Barcelona");
+        zmianaDruzynyTrenerowiComboBox.addItem("Real Madrid");
+        zmianaDruzynyTrenerowiComboBox.addItem("Inter Mediolan");
+        zmianaDruzynyTrenerowiComboBox.addItem("Juventus F.C.");
+        zmianaDruzynyZawodnikowiComboBox.addItem("");
+        zmianaDruzynyZawodnikowiComboBox.addItem("FC Bayern Monachium");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Borussia Dortmund");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Manchester City");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Manchester United");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Paris Saint-Germain");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Olympique Lyon");
+        zmianaDruzynyZawodnikowiComboBox.addItem("FC Barcelona");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Real Madrid");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Inter Mediolan");
+        zmianaDruzynyZawodnikowiComboBox.addItem("Juventus F.C.");
     }
 
     public AplikacjaAdministratora() {
@@ -442,6 +474,106 @@ public class AplikacjaAdministratora extends JPanel{
                 layout.previous(glownyPanel);
                 frame.setSize(1500,600);
 
+            }
+        });
+
+        zmienDruzyneTrenerowiWEdycjiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //ustawienie nowego okienka
+            }
+        });
+
+        zmianaDruzynyTrenerowiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(tableTrenerzy.getSelectionModel().isSelectionEmpty())
+                    return;
+                else{
+                    wierszTrenera = tableTrenerzy.getSelectedRow();
+
+                    ArrayList<Integer> wszystkieIdDruzyn = new ArrayList<Integer>();
+
+                    try {
+                        Statement statementSzukaj = bazaDanych.createStatement();
+                        ResultSet resultSet = statementSzukaj.executeQuery("SELECT * FROM `00018732_kk`.trenerzy");
+
+                        int idTrenowanejDruzyny = 0;
+
+                        while(resultSet.next()) {
+                            idTrenowanejDruzyny = resultSet.getInt("ID_Trenowanej_Druzyny");
+                            wszystkieIdDruzyn.add(idTrenowanejDruzyny);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    for(int i = 0; i < zmianaDruzynyTrenerowiComboBox.getItemCount(); i++){
+                        if(zmianaDruzynyTrenerowiComboBox.getSelectedIndex() == wszystkieIdDruzyn.get(i))
+                            break;
+                    }
+
+                    String komorkaIdTrenera = tableTrenerzy.getModel().getValueAt(wierszTrenera, 0).toString();
+                    String sql = "UPDATE `00018732_kk`.trenerzy SET ID_Trenowanej_Druzyny = " + zmianaDruzynyTrenerowiComboBox.getSelectedIndex() + " WHERE ID_Osoby = " + komorkaIdTrenera;
+
+                    try {
+                        Statement statement = bazaDanych.createStatement();
+                        statement.executeUpdate(sql);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    odswiezTabeleTrenerzy();
+                    //powrot do starego okienka
+                }
+            }
+        });
+        zmienDruzyneZawodnikowiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //ustawienie nowego okienka
+            }
+        });
+        zmianaDruzynyZawodnikowiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!tableSklady.getSelectionModel().isSelectionEmpty())
+                    return;
+                else{
+                    wierszZawodnika = tableSklady.getSelectedRow();
+
+                    ArrayList<Integer> wszystkieIdDruzyn = new ArrayList<Integer>();
+
+                    try {
+                        Statement statementSzukaj = bazaDanych.createStatement();
+                        ResultSet resultSet = statementSzukaj.executeQuery("SELECT * FROM `00018732_kk`.zawodnicy");
+
+                        int idDruzyny = 0;
+
+                        while(resultSet.next()) {
+                            idDruzyny = resultSet.getInt("ID_Druzyny");
+                            wszystkieIdDruzyn.add(idDruzyny);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    for(int i = 0; i < zmianaDruzynyZawodnikowiComboBox.getItemCount(); i++){
+                        if(zmianaDruzynyZawodnikowiComboBox.getSelectedIndex() == wszystkieIdDruzyn.get(i))
+                            return;
+                    }
+
+                    String komorkaIdZawodnika = tableSklady.getModel().getValueAt(wierszZawodnika, 0).toString();
+                    String sql = "UPDATE `00018732_kk`.zawodnicy SET ID_Druzyny = " + zmianaDruzynyZawodnikowiComboBox.getSelectedIndex() + " WHERE ID_Osoby = " + komorkaIdZawodnika;
+
+                    try {
+                        Statement statement = bazaDanych.createStatement();
+                        statement.executeUpdate(sql);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    odswiezTabeleZawodnicy();
+                    //powrot do starego okienka
+                }
             }
         });
     }

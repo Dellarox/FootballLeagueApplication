@@ -248,7 +248,7 @@
             <children>
               <component id="86e85" class="javax.swing.JButton" binding="odswiezTabeleZawodnicyButton">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Odśwież tabelę"/>
@@ -264,7 +264,7 @@
               </component>
               <component id="d31ca" class="javax.swing.JButton" binding="dodajZawodnikaButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Dodaj zawodnika"/>
@@ -417,6 +417,14 @@
             </constraints>
             <properties>
               <model/>
+            </properties>
+          </component>
+          <component id="9b105" class="javax.swing.JButton" binding="zmienDruzyneZawodnikowiButton">
+            <constraints>
+              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Zmien druzyne"/>
             </properties>
           </component>
         </children>
@@ -586,9 +594,17 @@
               <model/>
             </properties>
           </component>
+          <component id="95faa" class="javax.swing.JButton" binding="zmienDruzyneTrenerowiWEdycjiButton">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Zmień drużynę"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="ece26" binding="panelZamiany" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="ece26" binding="panelZamianyZawodnikaWTrenera" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <card name="Card5"/>
@@ -635,6 +651,64 @@
             <properties>
               <text value="Zamień w trenera"/>
             </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="3cff0" binding="panelZmianyDruzynyTrenerowi" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <card name="Card6"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="37ba9" class="javax.swing.JComboBox" binding="zmianaDruzynyTrenerowiComboBox">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <hspacer id="6ed0d">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="de082" class="javax.swing.JButton" binding="zmianaDruzynyTrenerowiButton">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Zmień drużynę"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="f84a" binding="panelZmianyDruzynyZawodnikowi" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <card name="Card7"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="dabcd" class="javax.swing.JButton" binding="zmianaDruzynyZawodnikowiButton">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Zmień drużynę"/>
+            </properties>
+          </component>
+          <hspacer id="117db">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="4746f" class="javax.swing.JComboBox" binding="zmianaDruzynyZawodnikowiComboBox">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
           </component>
         </children>
       </grid>
