@@ -1,9 +1,6 @@
 package Administrator;
 
-import Encje.Osoba;
-import Encje.Sedzia;
-import Encje.Trener;
-import Encje.Zawodnik;
+import Encje.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -92,7 +89,7 @@ public class AplikacjaAdministratora extends JPanel {
     private JButton powrótButton;
     private JButton dodajMeczButton;
     private JComboBox gospodarzeComboBox;
-    private JComboBox GoscieComboBox;
+    private JComboBox goscieComboBox;
     private JTextField dataMeczuTextField;
     private JButton powrotMeczButton;
     private JPanel panelDodawaniaMeczu;
@@ -247,7 +244,6 @@ public class AplikacjaAdministratora extends JPanel {
                         int idOsoby = 0;
                         while (resultSet.next()) {
                             idOsoby = resultSet.getInt("ID_Osoby");
-                            System.out.println(idOsoby);
                         }
 
 
@@ -256,6 +252,11 @@ public class AplikacjaAdministratora extends JPanel {
 
                         Sedzia sedzia = new Sedzia(Integer.parseInt(rokStartuKarieryTextField.getText()), idOsoby, date1, Integer.parseInt(pinTextField.getText()));
                         zapytanie.wykonajInsertSedzia(bazaDanych, sedzia);
+                        int idSedziego;
+                        resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.sedziowie WHERE ID_Osoby = "+ idOsoby+";");
+                        resultSet.next();
+                        idSedziego=resultSet.getInt("ID_Sedziego");
+                        zapytanie.wykonajInsterStatystykaSedziego(bazaDanych,idSedziego);
                         JOptionPane.showMessageDialog(null, "Utworzono konto sędziego");
                         imieTextField.setText("");
                         nazwiskoTextField.setText("");
@@ -667,7 +668,33 @@ public class AplikacjaAdministratora extends JPanel {
         dodajMeczButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                
+                if(gospodarzeComboBox.getSelectedIndex()==0 || goscieComboBox.getSelectedIndex()==0 || dataMeczuTextField.getText().equals("")
+                || numerKolejkiTextField.getText().equals("") || idSedziegoTextField.equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola");
+                }
+                else if (gospodarzeComboBox.getSelectedIndex()==goscieComboBox.getSelectedIndex())
+                {
+                    JOptionPane.showMessageDialog(null,"Drużyny nie mogą być takie same");
+                }
+                else
+                {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd");
+                    try {
+                        Date date = new Date(format.parse(dataMeczuTextField.getText()).getTime());
+                        Mecz mecz = new Mecz(gospodarzeComboBox.getSelectedItem().toString(),goscieComboBox.getSelectedItem().toString(),date,Integer.parseInt(numerKolejkiTextField.getText()),Integer.parseInt(idSedziegoTextField.getText()));
+                        zapytanie.wykonajInsertMecz(bazaDanych,mecz);
+                        JOptionPane.showMessageDialog(null,"Utworzono nowy mecz");
+                        gospodarzeComboBox.setSelectedIndex(0);
+                        goscieComboBox.setSelectedIndex(0);
+                        dataMeczuTextField.setText("");
+                        numerKolejkiTextField.setText("");
+                        idSedziegoTextField.setText("");
+                        odswiezTabeleSedziowieMecze();
+                    } catch (ParseException | SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

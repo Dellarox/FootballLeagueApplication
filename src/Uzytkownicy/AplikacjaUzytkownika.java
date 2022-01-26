@@ -51,7 +51,7 @@ public class AplikacjaUzytkownika {
     private JButton iloscFanowDruzynButton;
     private JButton punktacjaLigiButton;
     private JButton statystykiSedziowButton;
-    private JButton terminarzButton;
+    private JButton wynikiButton;
     private JButton trenerzyButton;
     private JButton wylogujButton1;
     private JButton zawodnicyButton;
@@ -65,12 +65,11 @@ public class AplikacjaUzytkownika {
     private DefaultTableModel defaultTableModelPunktacjaLigi = new DefaultTableModel(null, new String[]{"Nazwa druzyny", "Ilosc bramek zdobytych", "Ilosc bramek straconych", "Ilosc wygranych meczow", "Ilosc przegranych meczow", "Ilosc zremisowanych meczow", "Ilosc zdobytych punktow"});
     private DefaultTableModel defaultTableModelStatystykiSedziow = new DefaultTableModel(null, new String[]{"Nazwisko", "Imie", "Ilosc poprowadzonych spotkan", "Ilosc pokazanych zoltych kartek", "Ilosc pokazanych czerwonych kartek"});
     private DefaultTableModel defaultTableModelTerminarz = new DefaultTableModel(null, new String[]{"Numer kolejki", "Gospodarze", "Goscie", "Data meczu", "Ilosc goli gospodarzy", "Ilosc goli gosci"});
-    private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"Imie", "Nazwisko","Data rozpoczecia kariery", "Preferowana formacja", "Nazwa druzyny"});
+    private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"Imie", "Nazwisko", "Data rozpoczecia kariery", "Preferowana formacja", "Nazwa druzyny"});
     private DefaultTableModel defaultTableModelZawodnicy = new DefaultTableModel(null, new String[]{"Imie", "Nazwisko", "Nazwa druzyny", "Data rozpoczecia kariery", "Data zakonczenia kariery", "Pozycja"});
     private DefaultTableModel defaultTableModelMeczeDlaSedziow = new DefaultTableModel(null, new String[]{"ID Meczu", "Gospodarze", "Goscie", "Data meczu", "Numer kolejki", "ID Sedziego", "ID Druzyny wygranej"});
 
-    public void ustawComboBox()
-    {
+    public void ustawComboBox() {
         druzynyComboBox.removeAllItems();
         druzynyComboBox.addItem("");
         druzynyComboBox.addItem("FC Bayern Monachium");
@@ -84,13 +83,14 @@ public class AplikacjaUzytkownika {
         druzynyComboBox.addItem("Inter Mediolan");
         druzynyComboBox.addItem("Juventus F.C.");
     }
+
     public AplikacjaUzytkownika() {
         uzytkownikButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
                 layout.next(glownyPanelUzytkownika);
-                frame.setSize(450,400);
+                frame.setSize(450, 400);
 
             }
         });
@@ -98,7 +98,7 @@ public class AplikacjaUzytkownika {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanelUzytkownika);
-                frame.setSize(300,300);
+                frame.setSize(300, 300);
                 loginTextField.setText("");
                 hasloPasswordField.setText("");
             }
@@ -107,7 +107,7 @@ public class AplikacjaUzytkownika {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
-                frame.setSize(400,300);
+                frame.setSize(400, 300);
             }
         });
         powrotButton.addActionListener(new ActionListener() {
@@ -116,7 +116,7 @@ public class AplikacjaUzytkownika {
                 layout.first(glownyPanelUzytkownika);
                 idTextField.setText("");
                 pinPasswordField.setText("");
-                frame.setSize(300,300);
+                frame.setSize(300, 300);
             }
         });
         wylogujButton.addActionListener(new ActionListener() {
@@ -128,38 +128,30 @@ public class AplikacjaUzytkownika {
                 czerwoneTextField.setText("");
                 goleGospodarzyTextField.setText("");
                 goleGosciTextField.setText("");
-                frame.setSize(300,300);
+                frame.setSize(300, 300);
             }
         });
         zalogujButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (idTextField.getText().equals("") || pinPasswordField.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
-                }
-                else
-                {
+                if (idTextField.getText().equals("") || pinPasswordField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Należy uzupełnić wszystkie pola!");
+                } else {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.sedziowie WHERE ID_Sedziego = '" + Integer.parseInt(idTextField.getText()) + "';");
-                        if (resultSet.next()==false || resultSet.getInt("PIN_Sedziego")!=Integer.parseInt(pinPasswordField.getText()))
-                        {
-                            JOptionPane.showMessageDialog(null,"Niepoprawny login lub hasło!");
-                        }
-                        else if (!(resultSet.getString("Data_zakonczenia_kariery_sedziowskiej") ==null))
-                        {
-                            JOptionPane.showMessageDialog(null,"Konto jest nieaktywne z powodu zakończenia kariery");
-                        }
-                        else
-                        {
-                            sedziaMecze();
+                        if (resultSet.next() == false || resultSet.getInt("PIN_Sedziego") != Integer.parseInt(pinPasswordField.getText())) {
+                            JOptionPane.showMessageDialog(null, "Niepoprawny login lub hasło!");
+                        } else if (!(resultSet.getString("Data_zakonczenia_kariery_sedziowskiej") == null)) {
+                            JOptionPane.showMessageDialog(null, "Konto jest nieaktywne z powodu zakończenia kariery");
+                        } else {
                             layout.next(glownyPanelUzytkownika);
                             layout.next(glownyPanelUzytkownika);
                             zalogowanySedzia = resultSet.getInt("ID_Sedziego");
-                            frame.setSize(600,400);
+                            frame.setSize(600, 400);
                             idTextField.setText("");
                             pinPasswordField.setText("");
+                            sedziaMecze(zalogowanySedzia);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -173,7 +165,7 @@ public class AplikacjaUzytkownika {
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.previous(glownyPanelUzytkownika);
                 layout.previous(glownyPanelUzytkownika);
-                frame.setSize(600,400);
+                frame.setSize(600, 400);
                 loginRejestracjaTextField.setText("");
                 hasloRejestracjaTextField.setText("");
                 powtorzHasloTextField.setText("");
@@ -185,7 +177,7 @@ public class AplikacjaUzytkownika {
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.next(glownyPanelUzytkownika);
                 layout.next(glownyPanelUzytkownika);
-                frame.setSize(700,400);
+                frame.setSize(700, 400);
                 ustawComboBox();
 
             }
@@ -194,29 +186,24 @@ public class AplikacjaUzytkownika {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 layout.first(glownyPanelUzytkownika);
-                frame.setSize(300,300);
+                frame.setSize(300, 300);
             }
         });
         zalogujButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (loginTextField.getText().equals("") || hasloPasswordField.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
-                }
-                else {
+                if (loginTextField.getText().equals("") || hasloPasswordField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Należy uzupełnić wszystkie pola!");
+                } else {
                     Statement statement = null;
                     try {
                         statement = bazaDanych.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.uzytkownicy WHERE Pseudonim = '" + loginTextField.getText() + "';");
-                        if(resultSet.next()==false || !resultSet.getString("Haslo").equals(hasloPasswordField.getText()))
-                        {
-                            JOptionPane.showMessageDialog(null,"Niepoprawny login lub hasło!");
-                        }
-                        else
-                        {
+                        if (resultSet.next() == false || !resultSet.getString("Haslo").equals(hasloPasswordField.getText())) {
+                            JOptionPane.showMessageDialog(null, "Niepoprawny login lub hasło!");
+                        } else {
                             layout.last(glownyPanelUzytkownika);
-                            frame.setSize(700,400);
+                            frame.setSize(1400, 700);
                             hasloPasswordField.setText("");
                             loginTextField.setText("");
                         }
@@ -232,21 +219,16 @@ public class AplikacjaUzytkownika {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (loginRejestracjaTextField.getText().equals("") || hasloRejestracjaTextField.getText().equals("")
-                || powtorzHasloTextField.getText().equals("") || druzynyComboBox.getSelectedItem().equals(""))
-                {
-                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
-                }
-                else if(!hasloRejestracjaTextField.getText().equals(powtorzHasloTextField.getText()))
-                {
-                    JOptionPane.showMessageDialog(null,"Podane hasła nie są takie same!");
-                }
-                else
-                {
+                        || powtorzHasloTextField.getText().equals("") || druzynyComboBox.getSelectedItem().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Należy uzupełnić wszystkie pola!");
+                } else if (!hasloRejestracjaTextField.getText().equals(powtorzHasloTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "Podane hasła nie są takie same!");
+                } else {
 
                     Date aktualnaData = new Date();
-                    Uzytkownik uzytkownik = new Uzytkownik(loginRejestracjaTextField.getText(),aktualnaData,druzynyComboBox.getSelectedIndex(),hasloRejestracjaTextField.getText());
+                    Uzytkownik uzytkownik = new Uzytkownik(loginRejestracjaTextField.getText(), aktualnaData, druzynyComboBox.getSelectedIndex(), hasloRejestracjaTextField.getText());
                     try {
-                        zapytanie.wykonajInsertUzytkownik(bazaDanych,uzytkownik);
+                        zapytanie.wykonajInsertUzytkownik(bazaDanych, uzytkownik);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -256,28 +238,66 @@ public class AplikacjaUzytkownika {
         wprowadzSprawozdanieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
+                String gospodarze;
+                String goscie;
+                int idGospodarzy;
+                int idGosci;
+
                 if (idMeczuTextField.getText().equals("") || zolteKartkiTextField.getText().equals("")
-                || czerwoneTextField.getText().equals("") || goleGospodarzyTextField.getText().equals("") || goleGosciTextField.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(null,"Należy uzupełnić wszystkie pola!");
-                }
-                else
-                {
+                        || czerwoneTextField.getText().equals("") || goleGospodarzyTextField.getText().equals("") || goleGosciTextField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Należy uzupełnić wszystkie pola!");
+                } else {
                     SprawozdanieSedziego sprawozdanieSedziego = new SprawozdanieSedziego(Integer.parseInt(zolteKartkiTextField.getText()),
-                                                                                         Integer.parseInt(czerwoneTextField.getText()),
-                                                                                         Integer.parseInt(goleGospodarzyTextField.getText()),
-                                                                                         Integer.parseInt(goleGosciTextField.getText()),
-                                                                                         Integer.parseInt(idMeczuTextField.getText()),
-                                                                                         zalogowanySedzia);
+                            Integer.parseInt(czerwoneTextField.getText()),
+                            Integer.parseInt(goleGospodarzyTextField.getText()),
+                            Integer.parseInt(goleGosciTextField.getText()),
+                            Integer.parseInt(idMeczuTextField.getText()),
+                            zalogowanySedzia);
                     try {
-                        zapytanie.wykonajInsertSprawozdanieSedziego(bazaDanych,sprawozdanieSedziego);
-                        JOptionPane.showMessageDialog(null,"Dodano sprawozdanie");
+
+
+                        Statement statement = bazaDanych.createStatement();
+                        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.mecze WHERE ID_Meczu = " + idMeczuTextField.getText() + ";");
+                        resultSet.next();
+                        gospodarze = resultSet.getString("Gospodarze");
+                        goscie = resultSet.getString("Goscie");
+
+                        resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.druzyny WHERE Nazwa_druzyny = '" + gospodarze + "';");
+                        resultSet.next();
+                        idGospodarzy = resultSet.getInt("ID_Druzyny");
+
+                        resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.druzyny WHERE Nazwa_druzyny = '" + goscie + "';");
+                        resultSet.next();
+                        idGosci = resultSet.getInt("ID_Druzyny");
+
+                        try {
+                            zapytanie.wykonajInsertSprawozdanieSedziego(bazaDanych, sprawozdanieSedziego);
+                            JOptionPane.showMessageDialog(null, "Dodano sprawozdanie");
+                            if (!goleGospodarzyTextField.getText().equals(goleGosciTextField.getText())) {
+                                if (Integer.parseInt(goleGospodarzyTextField.getText()) > Integer.parseInt(goleGosciTextField.getText())) {
+                                    zapytanie.updateWygrana(bazaDanych, Integer.parseInt(idMeczuTextField.getText()), idGospodarzy, idGosci, Integer.parseInt(goleGospodarzyTextField.getText()), Integer.parseInt(goleGosciTextField.getText()));
+
+                                } else {
+                                    zapytanie.updateWygrana(bazaDanych, Integer.parseInt(idMeczuTextField.getText()), idGosci, idGospodarzy, Integer.parseInt(goleGospodarzyTextField.getText()), Integer.parseInt(goleGosciTextField.getText()));
+                                }
+                            } else {
+                                zapytanie.updateRemis(bazaDanych, idGospodarzy, idGosci, Integer.parseInt(goleGosciTextField.getText()));
+                            }
+                        } catch (SQLIntegrityConstraintViolationException exception) {
+                            JOptionPane.showMessageDialog(null, "Dodano już sprawozdanie dla tego meczu");
+                            return;
+                        }
+
+
+
                         idMeczuTextField.setText("");
                         zolteKartkiTextField.setText("");
                         czerwoneTextField.setText("");
                         czerwoneTextField.setText("");
                         goleGosciTextField.setText("");
                         goleGospodarzyTextField.setText("");
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -315,7 +335,7 @@ public class AplikacjaUzytkownika {
                 }
             }
         });
-        terminarzButton.addActionListener(new ActionListener() {
+        wynikiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -348,7 +368,7 @@ public class AplikacjaUzytkownika {
     }
 
     public static void main(String[] args) {
-        try{
+        try {
             bazaDanych = DriverManager.getConnection("jdbc:mysql://@czaplinek.home.pl:3306", "00018732_kk", "K@jetanKr@23");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -356,7 +376,7 @@ public class AplikacjaUzytkownika {
 
         frame = new JFrame("Aplikacja użytkownika");
         frame.setContentPane(new AplikacjaUzytkownika().glownyPanelUzytkownika);
-        frame.setSize(300,300);
+        frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.getContentPane().setLayout(layout);
@@ -369,7 +389,7 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_ilosc_fanow_druzyn");
-        while (resultSet.next()){
+        while (resultSet.next()) {
             String nazwaDruzyny = resultSet.getString("Nazwa drużyny");
             int iloscFanow = resultSet.getInt("Ilość fanów");
             defaultTableModelIloscFanowDruzyn.addRow(new Object[]{nazwaDruzyny, iloscFanow});
@@ -383,7 +403,7 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_punktacja");
-        while(resultSet.next()){
+        while (resultSet.next()) {
             String nazwaDruzyny = resultSet.getString("Nazwa drużyny");
             int iloscBramekZdobytych = resultSet.getInt("Ilość bramek zdobytych");
             int iloscBramekStraconych = resultSet.getInt("Ilość bramek straconych");
@@ -402,11 +422,11 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_statystyki_sedziow");
-        while (resultSet.next()){
+        while (resultSet.next()) {
             String nazwisko = resultSet.getString("Nazwisko");
             String imie = resultSet.getString("Imię");
             int iloscPoprowadzonychSpotkan = resultSet.getInt("Ilość poprowadzonych spotkań");
-            int iloscPokazanychZoltychKartek = resultSet.getInt("Ilość pokazanych zółtych kartek");
+            int iloscPokazanychZoltychKartek = resultSet.getInt("Ilość pokazanych żółtych kartek");
             int iloscPokazanychCzerwonychKartek = resultSet.getInt("Ilość pokazanych czerwonych kartek");
             defaultTableModelStatystykiSedziow.addRow(new Object[]{nazwisko, imie, iloscPoprowadzonychSpotkan, iloscPokazanychZoltychKartek, iloscPokazanychCzerwonychKartek});
         }
@@ -419,13 +439,13 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_terminarz");
-        while (resultSet.next()){
+        while (resultSet.next()) {
             int numerKolejki = resultSet.getInt("Numer kolejki");
             String gospodarze = resultSet.getString("Gospodarze");
-            String goscie = resultSet.getString("Goscie");
+            String goscie = resultSet.getString("Goście");
             Date dataMeczu = resultSet.getDate("Data meczu");
             int iloscGoliGospodarzy = resultSet.getInt("Ilość goli gospodarzy");
-            int iloscGoliGosci = resultSet.getInt("Ilosc goli gości");
+            int iloscGoliGosci = resultSet.getInt("Ilość goli gości");
             defaultTableModelTerminarz.addRow(new Object[]{numerKolejki, gospodarze, goscie, dataMeczu, iloscGoliGospodarzy, iloscGoliGosci});
         }
     }
@@ -437,7 +457,7 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_trenerzy");
-        while (resultSet.next()){
+        while (resultSet.next()) {
             String imie = resultSet.getString("Imię");
             String nazwisko = resultSet.getString("Nazwisko");
             Date dataRozpoczeciaKariery = resultSet.getDate("Data rozpoczęcia kariery trenerskiej");
@@ -454,7 +474,7 @@ public class AplikacjaUzytkownika {
 
         Statement statement = bazaDanych.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_zawodnicy");
-        while (resultSet.next()){
+        while (resultSet.next()) {
             String imie = resultSet.getString("Imię");
             String nazwisko = resultSet.getString("Nazwisko");
             String nazwaDruzyny = resultSet.getString("Nazwa drużyny");
@@ -465,14 +485,14 @@ public class AplikacjaUzytkownika {
         }
     }
 
-    public void sedziaMecze() throws SQLException {
+    public void sedziaMecze(int idZalogowanegoSedziego) throws SQLException {
         tableSprawozdania.setModel(defaultTableModelMeczeDlaSedziow);
 
         defaultTableModelMeczeDlaSedziow.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.mecze");
-        while(resultSet.next()){
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.mecze WHERE ID_Sedziego = "+ idZalogowanegoSedziego);
+        while (resultSet.next()) {
             int idMeczu = resultSet.getInt("ID_Meczu");
             String gospodarze = resultSet.getString("Gospodarze");
             String goscie = resultSet.getString("Goscie");

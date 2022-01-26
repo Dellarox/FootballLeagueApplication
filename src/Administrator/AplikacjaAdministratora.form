@@ -796,7 +796,7 @@
               <text value="Data meczu:"/>
             </properties>
           </component>
-          <component id="a10e9" class="javax.swing.JComboBox" binding="GoscieComboBox">
+          <component id="a10e9" class="javax.swing.JComboBox" binding="goscieComboBox">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
