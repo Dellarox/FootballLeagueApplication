@@ -480,7 +480,7 @@ public class AplikacjaAdministratora extends JPanel{
         zmienDruzyneTrenerowiWEdycjiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ustawienie nowego okienka
+                //wlaczenie okienka w ktorym podaje sie nowa druzyne trenerowi
             }
         });
 
@@ -523,14 +523,14 @@ public class AplikacjaAdministratora extends JPanel{
                         ex.printStackTrace();
                     }
                     odswiezTabeleTrenerzy();
-                    //powrot do starego okienka
+                    //powrot do okienka z trenerami
                 }
             }
         });
         zmienDruzyneZawodnikowiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ustawienie nowego okienka
+                //zmiana okienka na ustawienie nowej druzyny zawodnikowi
             }
         });
         zmianaDruzynyZawodnikowiButton.addActionListener(new ActionListener() {
@@ -572,7 +572,7 @@ public class AplikacjaAdministratora extends JPanel{
                         ex.printStackTrace();
                     }
                     odswiezTabeleZawodnicy();
-                    //powrot do starego okienka
+                    //powrot do okienka z tabela zawodnikow
                 }
             }
         });
