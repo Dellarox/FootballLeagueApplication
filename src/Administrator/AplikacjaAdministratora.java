@@ -90,11 +90,22 @@ public class AplikacjaAdministratora extends JPanel {
     private JButton powrotButton2;
     private JButton zwolnijTreneraButton;
     private JButton powrótButton;
+    private JButton dodajMeczButton;
+    private JComboBox gospodarzeComboBox;
+    private JComboBox GoscieComboBox;
+    private JTextField dataMeczuTextField;
+    private JButton powrotMeczButton;
+    private JPanel panelDodawaniaMeczu;
+    private JTable tableSedziowieMecze;
+    private JTextField numerKolejkiTextField;
+    private JTextField idSedziegoTextField;
+    private JButton dodajMeczButton1;
     private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"ID Trenera", "Data rozpoczecia kariery trenerskiej", "Data zakonczenia kariery trenerskiej", "Preferowana formacja", "ID Osoby", "ID Trenowanej druzyny"});
     private DefaultTableModel defaultTableModelZawodnicy = new DefaultTableModel(null, new String[]{"ID Zawodnika", "Data rozpoczecia kariery", "Data zakonczenia kariery", "Pozycja", "ID Osoby", "ID Druzyny"});
     private int wierszZawodnika;
     private int wierszTrenera;
-
+    private DefaultTableModel defaultTableModelSedziowieWMecze = new DefaultTableModel(null, new String[]{"ID Sedziego", "Imie", "Nazwisko", "Narodowosc"});
+    
     public void ustawComboBoxy() {
         druzynyComboBox.addItem("");
         druzynyComboBox.addItem("FC Bayern Monachium");
@@ -173,6 +184,7 @@ public class AplikacjaAdministratora extends JPanel {
         stworzTabeleTrenerzy();
         ustawComboBoxy();
         stworzTabeleZawodnicy();
+        stworzTabeleMeczeDlaSedziego();
         utworzKontoSedziegoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -631,6 +643,33 @@ public class AplikacjaAdministratora extends JPanel {
                 frame.setSize(1500,600);
             }
         });
+        powrotMeczButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                layout.first(glownyPanel);
+                frame.setSize(300,300);
+            }
+        });
+        dodajMeczButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                odswiezTabeleSedziowieMecze();
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                layout.next(glownyPanel);
+                frame.setSize(1500,600);
+            }
+        });
+        dodajMeczButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -711,6 +750,25 @@ public class AplikacjaAdministratora extends JPanel {
                 int idOsoby = resultSetZawodnik.getInt("ID_Osoby");
                 int idDruzyny = resultSetZawodnik.getInt("ID_Druzyny");
                 defaultTableModelZawodnicy.addRow(new Object[]{idZawodnika, dataRozpoczeciaKariery, dataZakonczeniaKariery, pozycja, idOsoby, idDruzyny});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void stworzTabeleMeczeDlaSedziego(){ tableSedziowieMecze.setModel(defaultTableModelSedziowieWMecze);}
+
+    private void odswiezTabeleSedziowieMecze(){
+        defaultTableModelSedziowieWMecze.setRowCount(0);
+        try{
+            Statement statement = bazaDanych.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT sedziowie.ID_Sedziego, osoby.Imie, osoby.Nazwisko, osoby.Narodowosc FROM `00018732_kk`.sedziowie inner join `00018732_kk`.osoby WHERE sedziowie.ID_Osoby = osoby.ID_Osoby AND sedziowie.Data_zakonczenia_kariery_sedziowskiej IS NULL;");
+            while(resultSet.next()){
+                int idSedziego = resultSet.getInt("ID_Sedziego");
+                String imie = resultSet.getString("Imie");
+                String nazwisko = resultSet.getString("Nazwisko");
+                String narodowosc = resultSet.getString("Narodowosc");
+                defaultTableModelSedziowieWMecze.addRow(new Object[]{idSedziego, imie, nazwisko, narodowosc});
             }
         } catch (SQLException e) {
             e.printStackTrace();

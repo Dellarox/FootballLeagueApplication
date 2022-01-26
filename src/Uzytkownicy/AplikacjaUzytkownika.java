@@ -67,6 +67,7 @@ public class AplikacjaUzytkownika {
     private DefaultTableModel defaultTableModelTerminarz = new DefaultTableModel(null, new String[]{"Numer kolejki", "Gospodarze", "Goscie", "Data meczu", "Ilosc goli gospodarzy", "Ilosc goli gosci"});
     private DefaultTableModel defaultTableModelTrenerzy = new DefaultTableModel(null, new String[]{"Imie", "Nazwisko","Data rozpoczecia kariery", "Preferowana formacja", "Nazwa druzyny"});
     private DefaultTableModel defaultTableModelZawodnicy = new DefaultTableModel(null, new String[]{"Imie", "Nazwisko", "Nazwa druzyny", "Data rozpoczecia kariery", "Data zakonczenia kariery", "Pozycja"});
+    private DefaultTableModel defaultTableModelMeczeDlaSedziow = new DefaultTableModel(null, new String[]{"ID Meczu", "Gospodarze", "Goscie", "Data meczu", "Numer kolejki", "ID Sedziego", "ID Druzyny wygranej"});
 
     public void ustawComboBox()
     {
@@ -152,6 +153,7 @@ public class AplikacjaUzytkownika {
                         }
                         else
                         {
+                            sedziaMecze();
                             layout.next(glownyPanelUzytkownika);
                             layout.next(glownyPanelUzytkownika);
                             zalogowanySedzia = resultSet.getInt("ID_Sedziego");
@@ -460,6 +462,25 @@ public class AplikacjaUzytkownika {
             Date dataZakonczeniaKariery = resultSet.getDate("Data zakończenia kariery piłkarskiej");
             String pozycja = resultSet.getString("Pozycja");
             defaultTableModelZawodnicy.addRow(new Object[]{imie, nazwisko, nazwaDruzyny, dataRozpoczeciaKariery, dataZakonczeniaKariery, pozycja});
+        }
+    }
+
+    public void sedziaMecze() throws SQLException {
+        tableSprawozdania.setModel(defaultTableModelMeczeDlaSedziow);
+
+        defaultTableModelMeczeDlaSedziow.setRowCount(0);
+
+        Statement statement = bazaDanych.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.mecze");
+        while(resultSet.next()){
+            int idMeczu = resultSet.getInt("ID_Meczu");
+            String gospodarze = resultSet.getString("Gospodarze");
+            String goscie = resultSet.getString("Goscie");
+            Date dataMeczu = resultSet.getDate("Data_meczu");
+            int numberKolejki = resultSet.getInt("Numer_kolejki");
+            int idSedziego = resultSet.getInt("ID_Sedziego");
+            int idDruzynyWygranej = resultSet.getInt("ID_Druzyny_Wygranej");
+            defaultTableModelMeczeDlaSedziow.addRow(new Object[]{idMeczu, gospodarze, goscie, dataMeczu, numberKolejki, idSedziego, idDruzynyWygranej});
         }
     }
 }
