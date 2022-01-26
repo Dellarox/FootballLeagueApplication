@@ -146,6 +146,10 @@ public class AplikacjaUzytkownika {
                         {
                             JOptionPane.showMessageDialog(null,"Niepoprawny login lub hasło!");
                         }
+                        else if (!(resultSet.getString("Data_zakonczenia_kariery_sedziowskiej") ==null))
+                        {
+                            JOptionPane.showMessageDialog(null,"Konto jest nieaktywne z powodu zakończenia kariery");
+                        }
                         else
                         {
                             layout.next(glownyPanelUzytkownika);
@@ -362,7 +366,7 @@ public class AplikacjaUzytkownika {
         defaultTableModelIloscFanowDruzyn.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_ilosc_fanow_druzyn");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_ilosc_fanow_druzyn");
         while (resultSet.next()){
             String nazwaDruzyny = resultSet.getString("Nazwa drużyny");
             int iloscFanow = resultSet.getInt("Ilość fanów");
@@ -376,7 +380,7 @@ public class AplikacjaUzytkownika {
         defaultTableModelPunktacjaLigi.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_punktacja");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_punktacja");
         while(resultSet.next()){
             String nazwaDruzyny = resultSet.getString("Nazwa drużyny");
             int iloscBramekZdobytych = resultSet.getInt("Ilość bramek zdobytych");
@@ -384,7 +388,7 @@ public class AplikacjaUzytkownika {
             int iloscWygranych = resultSet.getInt("Ilość wygranych meczów");
             int iloscPrzegranych = resultSet.getInt("Ilość przegranych meczów");
             int iloscZremisowanych = resultSet.getInt("Ilość zremisowanych meczów");
-            int iloscPuntktow = resultSet.getInt("Ilość zobytych puntków");
+            int iloscPuntktow = resultSet.getInt("Ilość zdobytych punktów");
             defaultTableModelPunktacjaLigi.addRow(new Object[]{nazwaDruzyny, iloscBramekZdobytych, iloscBramekStraconych, iloscWygranych, iloscPrzegranych, iloscZremisowanych, iloscPuntktow});
         }
     }
@@ -395,7 +399,7 @@ public class AplikacjaUzytkownika {
         defaultTableModelStatystykiSedziow.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_statystyki_sedziow");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_statystyki_sedziow");
         while (resultSet.next()){
             String nazwisko = resultSet.getString("Nazwisko");
             String imie = resultSet.getString("Imię");
@@ -412,14 +416,14 @@ public class AplikacjaUzytkownika {
         defaultTableModelTerminarz.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_terminarz");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_terminarz");
         while (resultSet.next()){
             int numerKolejki = resultSet.getInt("Numer kolejki");
             String gospodarze = resultSet.getString("Gospodarze");
             String goscie = resultSet.getString("Goscie");
             Date dataMeczu = resultSet.getDate("Data meczu");
             int iloscGoliGospodarzy = resultSet.getInt("Ilość goli gospodarzy");
-            int iloscGoliGosci = resultSet.getInt("Ilość goli gości");
+            int iloscGoliGosci = resultSet.getInt("Ilosc goli gości");
             defaultTableModelTerminarz.addRow(new Object[]{numerKolejki, gospodarze, goscie, dataMeczu, iloscGoliGospodarzy, iloscGoliGosci});
         }
     }
@@ -430,7 +434,7 @@ public class AplikacjaUzytkownika {
         defaultTableModelTrenerzy.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_trenerzy");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_trenerzy");
         while (resultSet.next()){
             String imie = resultSet.getString("Imię");
             String nazwisko = resultSet.getString("Nazwisko");
@@ -447,7 +451,7 @@ public class AplikacjaUzytkownika {
         defaultTableModelZawodnicy.setRowCount(0);
 
         Statement statement = bazaDanych.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM widok_zawodnicy");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM `00018732_kk`.widok_zawodnicy");
         while (resultSet.next()){
             String imie = resultSet.getString("Imię");
             String nazwisko = resultSet.getString("Nazwisko");
