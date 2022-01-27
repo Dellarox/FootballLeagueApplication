@@ -419,6 +419,7 @@ public class AplikacjaAdministratora extends JPanel {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zakończono karierę sędziego");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -441,6 +442,7 @@ public class AplikacjaAdministratora extends JPanel {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zakonczone karierę zawodnika");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -463,6 +465,7 @@ public class AplikacjaAdministratora extends JPanel {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zakończono karierę trenera");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -496,6 +499,7 @@ public class AplikacjaAdministratora extends JPanel {
                         statement.executeUpdate(sqlDodajDoTrener);
                         statement.executeUpdate(sqlUsuniecie);
                         statement.executeUpdate(sqlZmianaRoli);
+                        JOptionPane.showMessageDialog(null,"Zmieniono zawodnika na trenera");
                     } catch (SQLIntegrityConstraintViolationException exception) {
                         JOptionPane.showMessageDialog(null, "Ta drużyna już posiada trenera");
                     }
@@ -540,6 +544,7 @@ public class AplikacjaAdministratora extends JPanel {
                     Statement statement = bazaDanych.createStatement();
                     try {
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zmieniono drużynę trenerowi");
                     } catch (SQLIntegrityConstraintViolationException exception) {
                         JOptionPane.showMessageDialog(null, "Ta drużyna ma już trenera");
                     }
@@ -585,6 +590,7 @@ public class AplikacjaAdministratora extends JPanel {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zmienono drużynę zawodnika");
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -629,6 +635,7 @@ public class AplikacjaAdministratora extends JPanel {
                     try {
                         Statement statement = bazaDanych.createStatement();
                         statement.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null,"Zwolniono trenera");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
