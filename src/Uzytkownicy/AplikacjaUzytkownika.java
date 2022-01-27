@@ -229,6 +229,9 @@ public class AplikacjaUzytkownika {
                     Uzytkownik uzytkownik = new Uzytkownik(loginRejestracjaTextField.getText(), aktualnaData, druzynyComboBox.getSelectedIndex(), hasloRejestracjaTextField.getText());
                     try {
                         zapytanie.wykonajInsertUzytkownik(bazaDanych, uzytkownik);
+                        JOptionPane.showMessageDialog(null,"Zarejestrowano użytkownika");
+                    } catch (SQLIntegrityConstraintViolationException exception) {
+                        JOptionPane.showMessageDialog(null,"Ten pseudonim jest już zajęty");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -299,7 +302,7 @@ public class AplikacjaUzytkownika {
                         goleGospodarzyTextField.setText("");
 
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null,"Mecz o takim ID nie istnieje");
                     }
 
                 }
