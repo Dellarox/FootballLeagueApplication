@@ -708,7 +708,7 @@ public class AplikacjaAdministratora extends JPanel {
 
     public static void main(String[] args) {
         try {
-            bazaDanych = DriverManager.getConnection("jdbc:mysql://@czaplinek.home.pl:3306", "00018732_kk", "K@jetanKr@23");
+            bazaDanych = DriverManager.getConnection("baza", "login", "haslo");
         } catch (SQLException e) {
             e.printStackTrace();
         }
